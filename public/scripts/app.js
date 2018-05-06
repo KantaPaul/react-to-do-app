@@ -149,6 +149,9 @@ var Form = function (_React$Component4) {
           error: error
         };
       });
+      if (!error) {
+        e.target.elements.option.value = '';
+      }
     }
   }, {
     key: "render",
@@ -196,7 +199,7 @@ var MyApp = function (_React$Component5) {
     _this7.addOption = _this7.addOption.bind(_this7);
     _this7.removeSingleOption = _this7.removeSingleOption.bind(_this7);
     _this7.state = {
-      options: ["Option One", "Option Two", "Option Three"]
+      options: []
     };
     return _this7;
   }
@@ -234,6 +237,29 @@ var MyApp = function (_React$Component5) {
           })
         };
       });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      try {
+        var json = localStorage.getItem('options');
+        var options = JSON.parse(json);
+        if (options) {
+          this.setState(function () {
+            return {
+              options: options
+            };
+          });
+        }
+      } catch (e) {}
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.options.length !== this.state.options.length) {
+        var json = JSON.stringify(this.state.options);
+        localStorage.setItem('options', json);
+      }
     }
   }, {
     key: "render",

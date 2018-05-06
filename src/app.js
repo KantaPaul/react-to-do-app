@@ -51,6 +51,9 @@ class Form extends React.Component {
     this.setState((e) => ({
       error: error
     }))
+    if (!error) {
+      e.target.elements.option.value = ''
+    }
   }
   render () {
     return (
@@ -74,7 +77,7 @@ class MyApp extends React.Component {
     this.addOption = this.addOption.bind(this);
     this.removeSingleOption = this.removeSingleOption.bind(this);
     this.state = {
-        options: ["Option One", "Option Two", "Option Three"]
+        options: []
     }
   }
   removeAllOptions() {
@@ -100,6 +103,27 @@ class MyApp extends React.Component {
         })
       };
     })
+  }
+  componentDidMount() {
+    try {
+      let json = localStorage.getItem('options');
+      let options = JSON.parse(json);
+      if (options) {
+        this.setState(() => {
+          return {
+            options: options
+          }
+        })
+      }
+    } catch (e) {
+
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.options.length !== this.state.options.length) {
+      let json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+    }
   }
   render() {
     let title = "To Do App",
