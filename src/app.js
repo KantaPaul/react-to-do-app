@@ -1,4 +1,4 @@
-console.log('app js is running');
+console.log('App js is running');
 
 class Header extends React.Component {
   render() {
